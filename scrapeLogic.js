@@ -22,24 +22,17 @@ const scrapeLogic = async (res) => {
     // Set screen size
     await page.setViewport({ width: 1080, height: 1024 });
 
-    // Type into search box
-    await page.type(".search-box__input", "automate beyond recorder");
+    // Evaluate JavaScript within the page context to extract the text content of the <h2> element
+    const h2Text = await page.evaluate(() => {
+      // Find the <h2> element by its id
+      const h2Element = document.getElementById('a-powerful-web-span-stylecolor-var-chrome-primarymade-easierspan');
 
-    // Wait and click on first result
-    const searchResultSelector = ".search-box__link";
-    await page.waitForSelector(searchResultSelector);
-    await page.click(searchResultSelector);
+      // Extract the text content of the <h2> element
+      return h2Element.innerText;
+    });
 
-    // Locate the full title with a unique string
-    const textSelector = await page.waitForSelector(
-      "text/Customize and automate"
-    );
-    const fullTitle = await textSelector.evaluate((el) => el.textContent);
 
-    // Print the full title
-    const logStatement = `The title of this blog post is ${fullTitle}`;
-    console.log(logStatement);
-    res.send(logStatement);
+    res.send(h2Text);
   } catch (e) {
     console.error(e);
     res.send(`Something went wrong while running Puppeteer: ${e}`);
