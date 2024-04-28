@@ -32,8 +32,8 @@ app.get('/search', async (req, res) => {
     // Navigate to the specified URL
     await page.goto(url);
 
-    // Wait for navigation to complete
-    await page.waitForNavigation({ waitUntil: 'networkidle' });
+    // Wait for a brief period to ensure page has loaded
+    await page.waitForTimeout(2000);
 
     // Get the HTML content after rendering
     const content = await page.content();
